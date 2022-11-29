@@ -1,9 +1,17 @@
-
+#color by rank. relative color range
 #if the inputVec has NA, the boundary of the color scheme won't be reached, due to the length of inputVec. 
-continuousToColors <- function(inputVec,color_palette=c("#001260", "#EAEDE9")){
+continuousToColors2 <- function(inputVec,color_palette=c("#001260", "#EAEDE9")){
   pal = colorRampPalette(color_palette)
   order = findInterval(inputVec, sort(inputVec))
   cols = pal(length(inputVec))[order]
+  return(cols)
+}
+
+#color by value, absolute color range
+continuousToColors <- function(inputVec,color_palette=c("#001260", "#EAEDE9")){
+  pal = colorRampPalette(color_palette)
+  order = as.numeric(cut(inputVec,breaks=30))
+  cols = pal(30)[order]
   return(cols)
 }
 
