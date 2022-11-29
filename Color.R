@@ -10,8 +10,8 @@ continuousToColors <- function(inputVec,color_palette=c("#001260", "#EAEDE9")){
 #colors for values including nagetive, zero and positive in matrix
 #NA for NA, black for diagonal
 matrixToColor <- function(inputMatrix,Zmin=NA,Zmax=NA,color_palette=c("#001260", "#EAEDE9", "#601200")){
-  if(is.na(Zmin)) Zmin = min(inputMatrix)
-  if(is.na(Zmax)) Zmax = max(inputMatrix)
+  if(is.na(Zmin)) Zmin = min(inputMatrix,na.rm=T)
+  if(is.na(Zmax)) Zmax = max(inputMatrix,na.rm=T)
   colMatrx = inputMatrix
   NaIndex = is.na(colMatrx)
   upIndex = (!is.na(colMatrx)) & colMatrx>Zmax
