@@ -104,10 +104,10 @@ mylmerFake2 <- function(phenotype,DQ,familyQ,age,sex,data){
 }
 
 mylmNoIntc<-function(x,y){
-	s = summary(lm(y ~ x-1))$coefficients
+	s = summary(lm(y ~ x - 1))$coefficients
 	toPrint=paste(s[1,1],s[1,2],s[1,4],sep='\t')
 	s_y = qtrans(y)
-	s = summary(lm(s_y ~ x))$coefficients
+	s = summary(lm(s_y ~ x - 1))$coefficients
 	toPrint=paste(toPrint,s[1,1],s[1,2],s[1,4],sep='\t')
 	return(toPrint)
 }
