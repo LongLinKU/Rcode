@@ -1,3 +1,4 @@
+# with Intercept
 mylm<-function(x,y){
 	s = summary(lm(y ~ x))$coefficients
 	toPrint=paste(s[2,1],s[2,2],s[2,4],sep='\t')
@@ -7,20 +8,22 @@ mylm<-function(x,y){
 	return(toPrint)
 }
 
+# with Intercept, age and sex
 mylm2<-function(y,x,age1,age2,sex1,sex2){
-	s = summary(lm(y ~ x + age1 + age2 + sex1 + sex2))$coefficients
+	s = summary(lm(y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2)))$coefficients
 	toPrint=paste(s[2,1],s[2,2],s[2,4],sep='\t')
 	for (i in 3:dim(s)[1]){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,4],sep='\t')
 	}
 	s_y = qtrans(y)
-	s = summary(lm(s_y ~ x + age1 + age2 + sex1 + sex2 ))$coefficients
+	s = summary(lm(s_y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2) ))$coefficients
 	for (i in 2:dim(s)[1]){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,4],sep='\t')
 	}
 	return(toPrint)
 }
 
+# with Intercept. DQ, familyQ, random effect for families
 mylmer <- function(phenotype,DQ,familyQ,family,data){
 	lmer1 = lmer(phenotype~DQ+familyQ+(1|family),data=data)
 	s = summary(lmer1)$coefficients
@@ -46,6 +49,7 @@ mylmer <- function(phenotype,DQ,familyQ,family,data){
 	return(toPrint)
 }
 
+# with Intercept. DQ, familyQ, random effect for families, age and sex
 mylmer2 <- function(phenotype,DQ,familyQ,family,age,sex,data){
 	lmer1 = lmer(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)+(1|family),data=data)
 	s = summary(lmer1)$coefficients
@@ -71,6 +75,7 @@ mylmer2 <- function(phenotype,DQ,familyQ,family,age,sex,data){
 	return(toPrint)
 }
 
+# with Intercept. DQ, familyQ
 mylmerFake <- function(phenotype,DQ,familyQ,data){
 	lmer1 = lm(phenotype~DQ+familyQ,data=data)
 	s = summary(lmer1)$coefficients
@@ -87,6 +92,7 @@ mylmerFake <- function(phenotype,DQ,familyQ,data){
 	return(toPrint)
 }
 
+# with Intercept. DQ, familyQ, age and sex 
 mylmerFake2 <- function(phenotype,DQ,familyQ,age,sex,data){
 	lmer1 = lm(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex),data=data)
 	s = summary(lmer1)$coefficients
@@ -103,6 +109,7 @@ mylmerFake2 <- function(phenotype,DQ,familyQ,age,sex,data){
 	return(toPrint)
 }
 
+# No intercept
 mylmNoIntc<-function(x,y){
 	s = summary(lm(y ~ x - 1))$coefficients
 	toPrint=paste(s[1,1],s[1,2],s[1,4],sep='\t')
@@ -112,20 +119,37 @@ mylmNoIntc<-function(x,y){
 	return(toPrint)
 }
 
+#No intercept, with age and sex
 mylm2NoIntc<-function(y,x,age1,age2,sex1,sex2){
-	s = summary(lm(y ~ x + age1 + age2 + sex1 + sex2 - 1))$coefficients
+	s = summary(lm(y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2) - 1))$coefficients
 	toPrint=paste(s[1,1],s[1,2],s[1,4],sep='\t')
 	for (i in 2:dim(s)[1]){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,4],sep='\t')
 	}
 	s_y = qtrans(y)
-	s = summary(lm(s_y ~ x + age1 + age2 + sex1 + sex2 - 1))$coefficients
+	s = summary(lm(s_y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2) - 1))$coefficients
 	for (i in 1:dim(s)[1]){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,4],sep='\t')
 	}
 	return(toPrint)
 }
 
+#No intercept, with age and sex, random effect for families
+mylm2NoIntcF<-function(y,x,age1,age2,sex1,sex2,family){
+	s = summary(lmer(y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2) + (1|family) - 1))$coefficients
+	toPrint=paste(s[1,1],s[1,2],s[1,5],sep='\t')
+	for (i in 2:dim(s)[1]){
+		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
+	}
+	s_y = qtrans(y)
+	s = summary(lmer(s_y ~ x + as.numeric(age1) + as.numeric(age2) + as.factor(sex1) + as.factor(sex2) + (1|family) - 1))$coefficients
+	for (i in 1:dim(s)[1]){
+		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
+	}
+	return(toPrint)
+}
+
+#No intercept. With DQ, familyQ, random effect for families
 mylmerNoIntc <- function(phenotype,DQ,familyQ,family,data){
 	lmer1 = lmer(phenotype~DQ+familyQ+(1|family)-1,data=data)
 	s = summary(lmer1)$coefficients
@@ -150,6 +174,7 @@ mylmerNoIntc <- function(phenotype,DQ,familyQ,family,data){
 	return(toPrint)
 }
 
+#No intercept. With DQ, familyQ, random effect for families, age and sex. 
 mylmer2NoIntc <- function(phenotype,DQ,familyQ,family,age,sex,data){
 	lmer1 = lmer(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)+(1|family)-1,data=data)
 	s = summary(lmer1)$coefficients
@@ -175,6 +200,7 @@ mylmer2NoIntc <- function(phenotype,DQ,familyQ,family,age,sex,data){
 	return(toPrint)
 }
 
+## No Intercept. With DQ, familyQ
 mylmerFakeNoIntc <- function(phenotype,DQ,familyQ,data){
 	lmer1 = lm(phenotype~DQ+familyQ-1,data=data)
 	s = summary(lmer1)$coefficients
@@ -191,6 +217,7 @@ mylmerFakeNoIntc <- function(phenotype,DQ,familyQ,data){
 	return(toPrint)
 }
 
+#No intercept. With DQ, familyQ, age and sex 
 mylmerFake2NoIntc <- function(phenotype,DQ,familyQ,age,sex,data){
 	lmer1 = lm(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)-1,data=data)
 	s = summary(lmer1)$coefficients
