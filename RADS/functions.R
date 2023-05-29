@@ -183,9 +183,17 @@ mylmer2NoIntc <- function(phenotype,DQ,familyQ,family,age,sex,data){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
 	}
 	variance = VarCorr(lmer1)$family[1,1]
+	if (variance==0){
+		statistic = NA
+		p.value = NA
+	}
+	else{
 	lmer1_0 = lm(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)-1,data=data)
 	lmer1_variance_st = exactLRT(lmer1,lmer1_0)
-	toPrint = paste(toPrint,variance,lmer1_variance_st$statistic,lmer1_variance_st$p.value,sep='\t')
+		statistic = lmer1_variance_st$statistic
+		p.value = lmer1_variance_st$p.value
+	}
+	toPrint = paste(toPrint,variance,statistic,p.value,sep='\t')
 
 	data[,'phenotype'] = qtrans(data[,'phenotype'])
 	lmerS = lmer(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)+(1|family)-1,data=data)
