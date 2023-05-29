@@ -158,9 +158,16 @@ mylmerNoIntc <- function(phenotype,DQ,familyQ,family,data){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
 	}
 	variance = VarCorr(lmer1)$family[1,1]
-	lmer1_0 = lm(phenotype~DQ+familyQ-1,data=data)
-	lmer1_variance_st = exactLRT(lmer1,lmer1_0)
-	toPrint = paste(toPrint,variance,lmer1_variance_st$statistic,lmer1_variance_st$p.value,sep='\t')
+	if (variance==0){
+		statistic = NA
+		p.value = NA
+	}else{
+		lmer1_0 = lm(phenotype~DQ+familyQ-1,data=data)
+		lmer1_variance_st = exactLRT(lmer1,lmer1_0)
+		statistic = lmer1_variance_st$statistic
+		p.value = lmer1_variance_st$p.value
+	}
+	toPrint = paste(toPrint,variance,statistic,p.value,sep='\t')
 	data[,'phenotype'] = qtrans(data[,'phenotype'])
 	lmerS = lmer(phenotype~DQ+familyQ+(1|family) -1 ,data=data)
 	s = summary(lmerS)$coefficients
@@ -168,9 +175,16 @@ mylmerNoIntc <- function(phenotype,DQ,familyQ,family,data){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
 	}
 	variance = VarCorr(lmerS)$family[1,1]
-	lmerS_0 = lm(phenotype~DQ+familyQ-1,data=data)
-	lmerS_variance_st = exactLRT(lmerS,lmerS_0)
-	toPrint = paste(toPrint,variance,lmerS_variance_st$statistic,lmerS_variance_st$p.value,sep='\t')
+	if (variance==0){
+		statistic = NA
+		p.value = NA
+	}else{
+		lmerS_0 = lm(phenotype~DQ+familyQ-1,data=data)
+		lmerS_variance_st = exactLRT(lmerS,lmerS_0)
+		statistic = lmerS_variance_st$statistic
+		p.value = lmerS_variance_st$p.value
+	}
+	toPrint = paste(toPrint,variance,statistic,p.value,sep='\t')
 	return(toPrint)
 }
 
@@ -202,9 +216,17 @@ mylmer2NoIntc <- function(phenotype,DQ,familyQ,family,age,sex,data){
 		toPrint = paste(toPrint,s[i,1],s[i,2],s[i,5],sep='\t')
 	}
 	variance = VarCorr(lmerS)$family[1,1]
-	lmerS_0 = lm(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)-1,data=data)
-	lmerS_variance_st = exactLRT(lmerS,lmerS_0)
-	toPrint = paste(toPrint,variance,lmerS_variance_st$statistic,lmerS_variance_st$p.value,sep='\t')	
+	if (variance==0){
+		statistic = NA
+		p.value = NA
+	}
+	else{
+		lmerS_0 = lm(phenotype~DQ+familyQ+as.numeric(age)+as.factor(sex)-1,data=data)
+		lmerS_variance_st = exactLRT(lmerS,lmerS_0)
+		statistic = lmerS_variance_st$statistic
+		p.value = lmerS_variance_st$p.value	
+	}
+	toPrint = paste(toPrint,variance,statistic,p.value,sep='\t')	
 	return(toPrint)
 }
 
