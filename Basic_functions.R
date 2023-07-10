@@ -1,9 +1,9 @@
 library(stringr)
 
 signif_with_tailing_zeros <- function(number,digits,...){
-	rounded <- as.character(signif(number, digits = digits))
+	rounded <- as.character(signif(number, digits = digits)) 
 	point_index = regexpr("\\.", rounded)
-	if (point_index == -1){
+	if (point_index == -1){  # no change to scientific notation
 		non_zeros = length(strsplit(rounded,'')[[1]])
 	}
 	else{
