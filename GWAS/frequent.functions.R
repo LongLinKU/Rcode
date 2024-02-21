@@ -39,4 +39,5 @@ function(pvalues, chrs){  #chrs shuould be only number
   chroms_count = table(chrs)  #chrs shuould be only numbers
   axis(1, at = round(cumsum(chroms_count)-chroms_count/2), labels=names(chroms_count),cex.axis=0.8)
   abline(h=-log10(5e-8), lty=2)
+}
 
