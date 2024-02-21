@@ -30,10 +30,10 @@ qqp<-function(x,ci=TRUE,add=FALSE,ylab="Observed log10(p-value)",xlab="Expected 
 #qqp(p_scores, main='', las=1, bty='L', pch=19, cex=0.6)
 
 #manhattan plot (basic)
-function(pvalues, chrs){  #chrs shuould be only number
+manhattan <- function(pvalues, chrs){  #chrs shuould be only number
   palette(c("#67a9cf","#2166ac"))
   plot(0,0,col="transparent", xaxt="n", las=1, xaxt='n', bty='L',
-    xlim=c(0, nrow(assoc)), ylim=c(0, -log10(min(assoc$p))),
+    xlim=c(0, length(pvalues)), ylim=c(0, -log10(min(pvalues))),
     xlab='Chromosome',ylab='Observed log10(p-value)',pch=19, cex=0.4,
     main='')
   points(-log10(pvalues), col=chrs, pch=19, cex=0.5) #  pvalues and chrs have to be sorted by chr. As points() will plot the values of the vector against their indices.
