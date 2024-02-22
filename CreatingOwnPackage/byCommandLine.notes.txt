@@ -1,0 +1,23 @@
+1. open R
+2. rm(list = ls())
+3. ls() # --> character(0)
+4. package.skeleton(name='XL',path='')  # if you want to include C++ function, use RcppArmadillo.package.skeleton(). check [here](https://github.com/LongLinKU/Rcode/blob/main/CreatingOwnPackage/byCommandLine.withC%2B%2B.notes.txt)
+
+  # This will create the folder under the path for the package, which includes folders/files under it as:
+  # R/  ## where to add the functions in .R files 
+  # man/ ## where to add documentary for functions
+  # NAMESPACE
+  # DESCRIPTION
+  # And you can also do it in Rstudio by Clicking 'File' --> 'New Project' --> 'New Directory' --> 'R package'
+  
+7. Add/modify functions to .R files under R/ folder
+  Write down you code and save the .R file to R/ folder # the name of .R doesn't matter, but it is good to name it as the name of function to keep track. 
+8. Add/modify documentations to .Rd files under man/ folder
+  This can be done by using the 'Rd template' in Rstudio (recommended): 
+  Click 'File' --> 'New File' --> 'R Documentation' 
+  Enter the TITLE of the FUNCTION and select 'Fuction' under the 'Rd template' menu. 
+  Fill in the template at least for 'title'. # Know more about the format here?
+  Save the .Rd file to man/ folder. # the name of .Rd doesn't matter, but it is good to name it as the name of function to keep track. 
+9. R CMD build path/name  # this will be create a .tar.gz file under current folder but doesn't compile the packages. 
+10. R CMD check --as-cran *tar.gz
+11. R CMD INSTALL *tar.gz # This compiles the package and add it to the folder under .libPaths()
