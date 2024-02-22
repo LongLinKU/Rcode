@@ -1,0 +1,30 @@
+1. rm(list = ls())
+2. ls() # --> character(0)
+3. write your functions in .R file(s) # will be added to the packages in the following
+  Or 
+  write your functions after creating the project in step 6.
+4. install.packages(‘devtools’)
+5. Click 'File' --> 'New Project' --> 'New Directory' --> 'R package'
+6. Type the name of the package, upload .R files you just created in step 3 under 'Create package based on source files'. Click 'Create Project'. 
+  Or
+  Type the name of the package, No uploading .R files under 'Create package based on source files'. Click 'Create Project'.
+  
+  # This will create the folder for the package, which includes folders/files under it as:
+  # R/  ## where to add the functions in .R files 
+  # man/ ## where to add documentary for functions
+  # NAMESPACE
+  # DESCRIPTION
+  # And you can view and edit from the lower right panel of the Rstudio screen.
+7. Add/modify functions to .R files under R/ folder
+  This can be done by:
+  Click 'File' --> 'New File' --> 'R script'
+  Write down you code and save the .R file to R/ folder # the name of .R doesn't matter, but it is good to name it as the name of function to keep track. 
+8. Add/modify documentations to .Rd files under man/ folder
+  This can be done by using the 'Rd template': 
+  Click 'File' --> 'New File' --> 'R Documentation' 
+  Enter the TITLE of the FUNCTION and select 'Fuction' under the 'Rd template' menu. 
+  Fill in the template at least for 'title'. # Know more about the format here?
+  Save the .Rd file to man/ folder. # the name of .Rd doesn't matter, but it is good to name it as the name of function to keep track. 
+9. Ctrl + Shift + B # This will compile the package and create the package under .libPaths(). 
+                    # The project we created is just the input for compiling. Not the final library, and it can't be used by library(,lib.loc='folder for the created project')
+                    # one example for the change: under R/ folder in the real library under .libPaths() are .rdb .rdx files.  
