@@ -34,3 +34,5 @@
 12. R CMD INSTALL *tar.gz # This compiles the package and add it to the folder under .libPaths()
                           # if .libPaths() not writable: R CMD INSTALL *tar.gz --library=''
                           # and append .libPaths() in R: .libPaths(c(.libPaths(),new_path))
+
+### Useful Rcpp snippets: chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://web.mit.edu/insong/www/pdf/rpackage_instructions.pdf 
