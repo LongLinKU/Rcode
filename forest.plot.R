@@ -56,8 +56,8 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs,Ylabels=c(),Ns=c(),cols=c()
 }
 
 
-bitmap('test.png',res=400)
-forest_plot_by_data_frame(res2,BETAs=c('WT','HET','HOM'),SEs=c('se0','se1','se1'),Ns=c('N0','N1','N2'),showBox=T)
+#bitmap('test.png',res=400)
+#forest_plot_by_data_frame(res2,BETAs=c('WT','HET','HOM'),SEs=c('se0','se1','se1'),Ns=c('N0','N1','N2'),showBox=T)
 # forest_plot_by_data_frame(res2,BETAs=c('WT'),SEs=c('se0'),Ns=c('N0'))
 #add y-axis and lables.
-dev.off()
+#dev.off()
