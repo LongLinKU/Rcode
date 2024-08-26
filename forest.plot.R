@@ -39,14 +39,16 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=
 	    points(data[,BETAs[i]],row_num,pch=16,col=cols[i])
 	    if(!is.null(CIs)){
 		arrows(data[,CIs[2*i-1]],seq(i,n*N,n),data[,CIs[2*i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
+		truncate_left = c(truncate_left,row_num[which(CIs[2*i-1]] < par('usr')[1])])
+	        truncate_right = c(truncate_right,row_num[which(CIs[2*i]] > par('usr')[2])])
 	    }else{
 	    	arrows(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
+	    	truncate_left = c(truncate_left,row_num[which(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]] < par('usr')[1])])
+	    	truncate_right = c(truncate_right,row_num[which(data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]] > par('usr')[2])])
 	    }
 	    if (!is.null(Ylabels)){
 			axis(2,at=seq(i,n*N,n),data[,Ylabels[i]],las=1,lwd.ticks = 0, lty = "blank",cex.axis=1,line=1.5)
-		}
-		truncate_left = c(truncate_left,row_num[which(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]] < par('usr')[1])])
-	    truncate_right = c(truncate_right,row_num[which(data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]] > par('usr')[2])])
+	    }
 	}
 	for (i in truncate_left){
 		lines(c(truncate_anchors[1],xlims[1]),c(i,i),col='white',lty=2)
