@@ -1,4 +1,4 @@
-forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c();Ylabels=c(),Ns=c(),cols=c(),showXtick=T,showBox=F,highlight=0){
+forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=c(),cols=c(),showXtick=T,showBox=F,highlight=0){
 	n = length(BETAs)
 	n1 = length(SEs)
 	n2 = length(Ylabels)
