@@ -1,12 +1,20 @@
 forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=c(),cols=c(),showXtick=T,showBox=F,highlight=0){
+   
 	n = length(BETAs)
 	n1 = length(SEs)
 	n2 = length(Ylabels)
 	if ( ! is.null(SEs) & n!=n1){
 		stop("Different numbers of BETA and SE")
 	}
-	if(!is.null(Ylabels) & n2 != n){
-		stop('Different numbers of Y labels and Beta')
+	if(!is.null(Ylabels)){
+        if(length(Ylabels)==1){
+            par(mar=c(5.1,max(nchar(data[,Ylabels])),4.1,2.1))
+        }else{
+            par(mar=c(5.1,max(apply(data[,Ylabels],1,nchar)),4.1,2.1))
+        }
+        if(n2 != n){
+		    stop('Different numbers of Y labels and Beta')
+        }
 	}
 	if(!is.null(CIs)){
 		n3 = length(CIs)
@@ -39,8 +47,8 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=
 	    points(data[,BETAs[i]],row_num,pch=16,col=cols[i])
 	    if(!is.null(CIs)){
 		arrows(data[,CIs[2*i-1]],seq(i,n*N,n),data[,CIs[2*i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
-		truncate_left = c(truncate_left,row_num[which(CIs[2*i-1]] < par('usr')[1])])
-	        truncate_right = c(truncate_right,row_num[which(CIs[2*i]] > par('usr')[2])])
+		truncate_left = c(truncate_left,row_num[which(data[,CIs[2*i-1]] < par('usr')[1])])
+	    truncate_right = c(truncate_right,row_num[which(data[,CIs[2*i]] > par('usr')[2])])
 	    }else{
 	    	arrows(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
 	    	truncate_left = c(truncate_left,row_num[which(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]] < par('usr')[1])])
@@ -50,6 +58,7 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=
 			axis(2,at=seq(i,n*N,n),data[,Ylabels[i]],las=1,lwd.ticks = 0, lty = "blank",cex.axis=1,line=1.5)
 	    }
 	}
+    print(truncate_left)
 	for (i in truncate_left){
 		lines(c(truncate_anchors[1],xlims[1]),c(i,i),col='white',lty=2)
 	}
@@ -66,6 +75,7 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c(),Ylabels=c(),Ns=
 		abline(h=seq(n,n*(N-1),n)+0.5)
 	}
 }
+
 
 
 #bitmap('test.png',res=400)
