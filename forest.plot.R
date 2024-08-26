@@ -1,12 +1,18 @@
-forest_plot_by_data_frame <- function(data,BETAs,SEs,Ylabels=c(),Ns=c(),cols=c(),showXtick=T,showBox=F){
+forest_plot_by_data_frame <- function(data,BETAs,SEs=c(),CIs=c();Ylabels=c(),Ns=c(),cols=c(),showXtick=T,showBox=F,highlight=0){
 	n = length(BETAs)
 	n1 = length(SEs)
 	n2 = length(Ylabels)
-	if (n!=n1){
+	if ( ! is.null(SEs) & n!=n1){
 		stop("Different numbers of BETA and SE")
 	}
 	if(!is.null(Ylabels) & n2 != n){
 		stop('Different numbers of Y labels and Beta')
+	}
+	if(!is.null(CIs)){
+		n3 = length(CIs)
+		if (n3 != n*2){
+			stop('Numbers of CI should be twice as Betas')
+		}
 	}
 	no_Ns=FALSE
 	if(is.null(Ns)){
@@ -31,7 +37,11 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs,Ylabels=c(),Ns=c(),cols=c()
 		}
 		row_num = seq(i,n*N,n)
 	    points(data[,BETAs[i]],row_num,pch=16,col=cols[i])
-	    arrows(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
+	    if(!is.null(CIs)){
+		arrows(data[,CIs[2*i-1]],seq(i,n*N,n),data[,CIs[2*i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
+	    }else{
+	    	arrows(data[,BETAs[i]]-qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),data[,BETAs[i]]+qt(0.975,df)*data[,SEs[i]],seq(i,n*N,n),angle = 90, code = 3, length=0.03,col=cols[i],lwd=1)
+	    }
 	    if (!is.null(Ylabels)){
 			axis(2,at=seq(i,n*N,n),data[,Ylabels[i]],las=1,lwd.ticks = 0, lty = "blank",cex.axis=1,line=1.5)
 		}
@@ -47,7 +57,7 @@ forest_plot_by_data_frame <- function(data,BETAs,SEs,Ylabels=c(),Ns=c(),cols=c()
 	if(showXtick){
 		xticks = axTicks(1)
 		vColor = rep('grey90',length(xticks))
-		vColor[xticks==0] = 'grey50'
+		vColor[xticks==highlight] = 'grey50'
 		abline(v=xticks,col=vColor)
 	}
 	if(showBox){
